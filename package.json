@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec server.js --ignore public/",
+    "start": "nodemon --exec babel-node server.js --ignore public/",
     "dev": "webpack -wd"
   },
   "repository": {
@@ -18,8 +18,11 @@
   },
   "homepage": "https://github.com/rkurbanov/learn-fullstack-javascript#readme",
   "dependencies": {
+    "ejs": "^2.5.7",
     "express": "^4.15.4",
+    "json-loader": "^0.5.7",
     "mongodb": "^2.2.31",
+    "node-sass-middleware": "^0.11.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
   },
