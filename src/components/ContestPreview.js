@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class ContestPreview extends Component {
     handleClick = () => {
@@ -19,4 +20,8 @@ class ContestPreview extends Component {
     }
 }
 
+ContestPreview.propType = {
+    categoryName: PropTypes.string.isRequired,
+    contestName: PropTypes.string.isRequired
+}
 export default ContestPreview;
