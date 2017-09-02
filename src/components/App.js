@@ -3,6 +3,7 @@ import React from 'react';
 import Header from './Header'
 import ContestList from './ContestList'
 import Contest from './Contest'
+import { fetchContest } from '../api'
 
 import data from '../testData.json'
 
@@ -25,10 +26,17 @@ class App extends React.Component {
             `/contest/${contestId}`
         )
 
-        this.setState({
-            pageHeader: this.state.contests[contestId].contestName,
-            currentContestId: contestId
-        })
+        fetchContest(contestId)
+            .then(contest => {
+                this.setState({
+                    pageHeader: contest.contestName,
+                    currentContestId: contest.id,
+                    contests: {
+                        ...this.state.contests,
+                        [contest.id]: contest
+                    }
+                })
+            })
     }
 
     currentContent() {
