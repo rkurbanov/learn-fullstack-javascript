@@ -14,13 +14,29 @@ MongoClient.connect(config.mongodbUri, (err, db) => {
 
 const router = express.Router()
 const contests = data.contests.reduce((contests, contest) => {
-    contests[contest.id] = contest
-    return contests
+contests[contest.id] = contest
+return contests
 }, {})
 
+router.get('/names/:nameIds', (req, res) => {
+    const nameIds = req.params.nameIds.split(',').map(Number)
+    let names = {}
+    mdb.collection('names').find({id: { $in: nameIds }})
+        .each((err, name) => {
+            assert.equal(null, err)
+
+            if (!name) {
+                res.send({names})
+                return
+            }
+
+            names[name.id] = name
+        })
+})
+
 router.get('/contests', (req, res) => {
-    let contests = {}
-    mdb.collection('contests').find({})
+let contests = {}
+mdb.collection('contests').find({})
         .project({
             id: 1,
             categoryName: 1,
@@ -30,16 +46,16 @@ router.get('/contests', (req, res) => {
             assert.equal(null, err)
 
             if (!contest) {
-                res.send({contests})
+            res.send({contests})
                 return
             }
 
-            contests[contest.id] = contest
+        contests[contest.id] = contest
         })
 })
 
 router.get('/contests/:contestId', (req, res) => {
-    mdb.collection('contests').findOne({id: Number(req.params.contestId)})
+mdb.collection('contests').findOne({id: Number(req.params.contestId)})
         .then(contest => res.send(contest))
         .catch(console.err)
 })
