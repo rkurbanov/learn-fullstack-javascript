@@ -3,7 +3,7 @@ import React from 'react';
 import Header from './Header'
 import ContestList from './ContestList'
 import Contest from './Contest'
-import { fetchContest } from '../api'
+import { fetchContest, fetchContestList } from '../api'
 
 import data from '../testData.json'
 
@@ -38,6 +38,21 @@ class App extends React.Component {
             })
     }
 
+    fetchContestList = () => {
+        pushState(
+            {currentContestId: null},
+            '/'
+        )
+
+        fetchContestList()
+            .then(contests => {
+                this.setState({
+                    currentContestId: null,
+                    contests
+                })
+            })
+    }
+
     currentContest() {
         return this.state.contests[this.state.currentContestId]
     }
@@ -52,7 +67,7 @@ class App extends React.Component {
 
     currentContent() {
         if(this.state.currentContestId) {
-            return <Contest {...this.currentContest()} />
+            return <Contest {...this.currentContest()} contestListClick={this.fetchContestList}/>
         }
 
         return <ContestList 

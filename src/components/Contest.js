@@ -5,12 +5,18 @@ export default class Content extends Component {
   render() {
     return (
       <div className="Contest">
-        {this.props.description}
+        <div className='contest-descriptions' >
+          {this.props.description}
+        </div>
+        <div className='home-link link' onClick={this.props.contestListClick}>
+          Contest list
+        </div>
       </div>
     )
   }
 }
 
 Content.propTypes = {
-  description: PropTypes.string.isRequired
+  description: PropTypes.string.isRequired,
+  contestListClick: PropTypes.func.isRequired
 }
