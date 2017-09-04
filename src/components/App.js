@@ -3,7 +3,7 @@ import React from 'react';
 import Header from './Header'
 import ContestList from './ContestList'
 import Contest from './Contest'
-import { fetchContest, fetchContestList } from '../api'
+import { fetchContest, fetchContestList, fetchNames } from '../api'
 
 import data from '../testData.json'
 
@@ -66,6 +66,27 @@ class App extends React.Component {
             })
     }
 
+    fetchNames = (nameIds) => {
+        if (!nameIds.length) {
+            return
+        }
+        fetchNames(nameIds)
+            .then(names => {
+                this.setState({
+                    names: names
+                })
+            })
+    }
+
+    lookupName = (nameId) => {
+        if (!this.state.names || !this.state.names[nameId]){
+            return {
+                name: '...'
+            }
+        }
+        return this.state.names[nameId]
+    }
+
     currentContest() {
         return this.state.contests[this.state.currentContestId]
     }
@@ -80,7 +101,10 @@ class App extends React.Component {
 
     currentContent() {
         if(this.state.currentContestId) {
-            return <Contest {...this.currentContest()} contestListClick={this.fetchContestList}/>
+            return <Contest {...this.currentContest()}
+                fetchNames={this.fetchNames}
+                lookupName={this.lookupName}
+                contestListClick={this.fetchContestList}/>
         }
 
         return <ContestList 
